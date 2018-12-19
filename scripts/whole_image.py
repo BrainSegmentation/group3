@@ -26,11 +26,32 @@ def has_overlap(mask_1,mask_2,pd):
 	"""Check if two patches have a possible overlap. pd is the patch dimensions"""
 	return (np.absolute(mask_1['coord'] - mask_2['coord'])<pd).all()
 
-def has_conflict(mask_1,mask_2,pd):
+def has_conflict_to_be_tested(mask_1,mask_2,pd):
 	"""Check if two masks have an effective conflict. pd is the patch dimensions
 	Conflict is present when more than 10 pixels coincide."""
 	
+	# get the topleft and bottomright corners of the patch that contains the mask
+	rectangle_1_opposite_corners = [[mask_1['coord'], mask_1['coord']+pd]
+	rectangle_2_opposite_corners = [[mask_2['coord'], mask_2['coord']+pd]
 	
+	# assemble all corners to get the bounding box of the two patches
+	all_opposite_corners = rectangle_1_opposite_corners + rectangle_2_opposite_corners
+	bbox = cv.boundingRect(np.array(all_opposite_corners))
+	
+	# create the local bounding box image that covers the two patches and insert the patch that contains the mask
+	# mask 1
+	im_bbox_1 = np.zeros((bbox[2], bbox[3]))
+	im_bbox_1[mask_1['coord'][0] - bbox[0]: mask_1['coord'][0] - bbox[0] + pd[0], mask_1['coord'][0] - bbox[0]: mask_1['coord'][1] - bbox[1] + pd[1]] = mask_1['mask']
+	
+	# mask 2
+	im_bbox_2 = np.zeros((bbox[2], bbox[3]))
+	im_bbox_2[mask_1['coord'][0] - bbox[0]: mask_2['coord'][0] - bbox[0] + pd[0], mask_2['coord'][0] - bbox[0]: mask_2['coord'][1] - bbox[1] + pd[1]] = mask_2['mask']
+	
+	return cv.countNonZero(cv.bitwise_and(im_bbox_1, im_bbox_2)) >10
+	
+def has_conflict(mask_1,mask_2,pd):	
+	"""Check if two masks have an effective conflict. pd is the patch dimensions
+	Conflict is present when more than 10 pixels coincide."""
 	overlap_coordinates = [[0,0],[0,0]]
 	overlap_in_image_1 = [[0,0],[0,0]]
 	overlap_in_image_2 = [[0,0],[0,0]]
