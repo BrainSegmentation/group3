@@ -87,9 +87,6 @@ def model_confl(model , image , patch_dimensions , min_ovl, suppress_over_mean =
 	small area. Used to remove corner misdetection.
 	In this case masks are removed when they have area < mean_area/suppression_parameter."""
 	
-	# define result function
-	
-	function = lambda image: model.detect([image])[0]
 	interpatch = [0,0]
 	
 	# calculate new overlap to patch the image to have equidistant patches
@@ -128,7 +125,7 @@ def model_confl(model , image , patch_dimensions , min_ovl, suppress_over_mean =
 			
 			# apply the model
 			
-			result = function(patch_image)
+			result = model.detect([patch_image])[0]
 			
 			# add patch coordinates to the result for our purposes
 			
