@@ -13,15 +13,6 @@ def calculate_centroid(image):
 	
 	return np.array([x,y])
 
-def global_coord(centroid , coord_patch):
-	"""convert local patch coordinates to global coordinates"""
-	
-	g_centroid = np.asarray([0,0])
-	g_centroid[0] = centroid[0] + coord_patch[0]
-	g_centroid[1] = centroid[1] + coord_patch[1]
-	
-	return g_centroid
-
 def has_overlap(mask_1,mask_2,pd):
 	"""Check if two patches have a possible overlap. pd is the patch dimensions"""
 	return (np.absolute(mask_1['coord'] - mask_2['coord'])<pd).all()
@@ -219,7 +210,7 @@ def model_confl(model , image , patch_dimensions , min_ovl, suppress_over_mean =
 		
 		tissue_masks[i]['centroid'] = []
 		rel_centroid = calculate_centroid(tissue_masks[i]['mask'])
-		tissue_masks[i]['centroid']=(global_coord(rel_centroid, tissue_masks[i]['coord']))
+		tissue_masks[i]['centroid'] = rel_centroid + tissue_masks[i]['coord']
 		
 		# add centroid to centroid list
 		
@@ -247,7 +238,7 @@ def model_confl(model , image , patch_dimensions , min_ovl, suppress_over_mean =
 		
 		mag_masks[i]['centroid'] = []
 		rel_centroid = calculate_centroid(mag_masks[i]['mask'])
-		mag_masks[i]['centroid']=(global_coord(rel_centroid, mag_masks[i]['coord']))
+		mag_masks[i]['centroid']= rel_centroid + mag_masks[i]['coord']
 		
 		# add centroid to centroid list
 		
