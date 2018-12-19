@@ -5,7 +5,7 @@ import time
 import sys
 
 def calculate_centroid(image):
-""" this function calculates the centroid of a mask"""    
+    """ this function calculates the centroid of a mask"""    
     
     # calculate x_2
     
@@ -111,6 +111,9 @@ def model_confl(model , image , patch_dimensions , min_ovl, suppress_over_mean =
     
     ############################### classification
     
+    print('Applying model to image..')
+    start = time.time()
+    
     r = []
     for i in range(n_patches[0]):            
         for j in range(n_patches[1]):
@@ -152,8 +155,12 @@ def model_confl(model , image , patch_dimensions , min_ovl, suppress_over_mean =
     tissue_masks = [mask for mask in masks if mask['class_id'] == 1]
     mag_masks = [mask for mask in masks if mask['class_id'] == 2]
     
+    end = time.time()
+    print(f'Done! Elapsed time : {end-start}')
+    
     ################################### conflicts resolution
     
+    print('Solving conflicts...')
     start = time.time()
     
     # every possible mask pair is checked within same class.
@@ -195,9 +202,13 @@ def model_confl(model , image , patch_dimensions , min_ovl, suppress_over_mean =
     mag_masks = [mask for mask in mag_masks if mask['mask'].any()]
     
     end = time.time()
-    print(f"Elapsed time : {end-start}")
+    print(f"Done! Elapsed time : {end-start}")
     
     ####################### centroids calculation 
+    
+    print('Calculating centroids and orientations...')
+    start = time.time()
+    
     
     centroids_tissue = []
     centroids_mag = []
@@ -283,5 +294,8 @@ def model_confl(model , image , patch_dimensions , min_ovl, suppress_over_mean =
         orientations.append(vector/np.linalg.norm(vector))
     
     orientations = np.stack(orientations)
+    
+    end = time.time()
+    print(f"Done! Elapsed time : {end-start}")
     
     return centroids_tissue, centroids_mag, orientations

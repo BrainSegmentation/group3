@@ -5,7 +5,6 @@ Please be sure to have all the following packages installed and working:
 - tensorflow
 - keras
 - skimage
-
 If you have the tensorflow-gpu implementation, be sure to have everything ready following this guide:
 https://towardsdatascience.com/setup-an-environment-for-machine-learning-and-deep-learning-with-anaconda-in-windows-5d7134a3db10
 To perform the training, you would need a powerful enough gpu. We used
@@ -36,7 +35,7 @@ You will need the weights to run validation and whole image results. If you don'
 
 ## Validation
 
-Download the weights from the machine/from the link into logs/Config1 and run the validation.ipynb notebook. For final whole image results, run the whole_image.ipynb notebook (our "run.ipynb"). Please observed that the image it runs on has not been part of the training dataset of the model.
+Download the weights from the machine/from the link into logs/Config1 and run the validation.ipynb notebook. For final whole image results, run the whole_image_validate.ipynb notebook (our "run.ipynb"). Please observe that the image it runs on has not been part of the training dataset of the model.
 
 ## Links
 

@@ -11,7 +11,7 @@ import skimage
 
 
 class SlicesDataset(utils.Dataset):
-""" Extension of maskrcnn dataset class to be used with our provided data. """
+    """ Extension of maskrcnn dataset class to be used with our provided data. """
     
     
     def load_slices(self, dataset_dir, n_images, n_patches, channels = ["base"]):
