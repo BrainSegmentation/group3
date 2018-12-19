@@ -1,13 +1,14 @@
 
 # coding: utf-8
 
-# In[ ]:
 
 
 import numpy as np
 from mrcnn import config
 
 class Config1(config.Config):
+    """Extension of config class which contains informations for training and inference mode."""
+    
     NAME = "Config1"
     
     GPU_COUNT = 1
